@@ -5,7 +5,7 @@ Bundler/DuplicatedGem:
   Enabled: true
 
 Bundler/GemComment:
-  Enabled: true
+  Enabled: false
 
 Bundler/InsecureProtocolSource:
   Enabled: true
@@ -146,6 +146,7 @@ Layout/FirstParameterIndentation:
 Layout/HashAlignment:
   Enabled: true
   EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
 
 Layout/HeredocArgumentClosingParenthesis:
   Enabled: true
@@ -240,6 +241,7 @@ Layout/SpaceAroundOperators:
 
 Layout/SpaceBeforeBlockBraces:
   Enabled: true
+  EnforcedStyleForEmptyBraces: space
 
 Layout/SpaceBeforeComma:
   Enabled: true
@@ -267,6 +269,7 @@ Layout/SpaceInsideBlockBraces:
 
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
+  EnforcedStyle: no_space
 
 Layout/SpaceInsideParens:
   Enabled: true
@@ -1117,6 +1120,7 @@ Style/TrailingCommaInBlockArgs:
 
 Style/TrailingCommaInHashLiteral:
   Enabled: true
+  EnforcedStyleForMultiline: comma
 
 Style/TrailingMethodEndStatement:
   Enabled: true

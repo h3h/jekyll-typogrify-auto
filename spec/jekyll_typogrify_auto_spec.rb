@@ -6,14 +6,12 @@ RSpec.describe(Jekyll::Typogrify::Auto) do
   let(:config_overrides) { {} }
   let(:configs) do
     Jekyll.configuration(
-      config_overrides.merge(
-        # rubocop:disable Style/StringHashKeys
-        'skip_config_files' => false,
-        'collections'       => { 'docs' => { 'output' => true } },
-        'source'            => fixtures_dir,
-        'destination'       => fixtures_dir('_site')
-        # rubocop:enable Style/StringHashKeys
-      )
+      config_overrides.merge({
+        skip_config_files: false,
+        collections:       {docs: {output: true}.stringify_keys}.stringify_keys,
+        source:            fixtures_dir,
+        destination:       fixtures_dir('_site'),
+      }).stringify_keys
     )
   end
 end
