@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'jekyll'
+require 'jekyll_typogrify_auto'
+
 RSpec.describe(Jekyll::Typogrify::Auto) do
   Jekyll.logger.log_level = :error
 
