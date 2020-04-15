@@ -3,8 +3,8 @@
 
 ```ruby
 def test_output
-  "test @TestUser test"
+  "dash – dash"
 end
 ```
 
-test @TestUser test
+test — test

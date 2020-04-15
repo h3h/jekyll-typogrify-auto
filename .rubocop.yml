@@ -549,6 +549,8 @@ Metrics/AbcSize:
 
 Metrics/BlockLength:
   Enabled: true
+  Exclude:
+    - 'spec/**/*'
 
 Metrics/BlockNesting:
   Enabled: true
@@ -1072,9 +1074,13 @@ Style/StderrPuts:
 
 Style/StringHashKeys:
   Enabled: true
+  Exclude:
+  - 'spec/**/*'
 
 Style/StringLiterals:
   Enabled: true
+  Exclude:
+  - 'spec/**/*'
 
 Style/StringLiteralsInInterpolation:
   Enabled: true

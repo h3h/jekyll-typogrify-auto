@@ -2,4 +2,4 @@
 title: I'm a post
 ---
 
-test @TestUser test
+test — test
