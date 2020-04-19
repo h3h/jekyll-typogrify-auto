@@ -34,11 +34,11 @@ module Jekyll
           if content.include? BODY_START_TAG
             html_content = select_content(content, config)
 
-            processed_markup = filter_pipeline(
+            pipeline = filter_pipeline(
               config.fetch(CONFIG_KEY, {}).fetch(CONFIG_TYPOGRUBY_KEY, {})
-            ).call(html_content)[:output].to_s
+            ).call(html_content)
 
-            doc.output = processed_markup
+            doc.output = pipeline[:output].to_s
           else
             doc.output = content
           end
@@ -91,9 +91,7 @@ module Jekyll
         # @return [Jekyll::Configuration]
         #
         def config_defaults
-          Jekyll::Configuration.new({
-            tag_selector: 'article'
-          })
+          Jekyll::Configuration.new({tag_selector: 'article'})
         end
       end
     end

@@ -34,7 +34,7 @@ RSpec.describe(Jekyll::Typogrify::Auto) do
     expect(basic_post.output).to include(result)
   end
 
-  it "doesn't replace mentions in a code block" do
+  it "doesn't replace mentions in a code block but does outside" do
     expect(complex_post.output).to match(
       %r{<pre\b.*?dash — dash.*?</pre>}
     )
