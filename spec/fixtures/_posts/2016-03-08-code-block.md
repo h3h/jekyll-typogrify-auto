@@ -3,8 +3,8 @@
 
 ```ruby
 def test_output
-  "dash – dash"
+  "dash–dash"
 end
 ```
 
-test — test
+test—test
