@@ -18,7 +18,7 @@ RSpec.describe(Jekyll::Typogrify::Auto) do
   end
 
   let(:site)         { Jekyll::Site.new(configs) }
-  let(:result)       { %(<span class="em">—</span>") }
+  let(:result)       { %(<span class="emdash">&mdash;</span>") }
   let(:posts)        { site.posts.docs.sort.reverse }
   let(:basic_post)   { find_by_title(posts, "I'm a post") }
   let(:complex_post) { find_by_title(posts, 'Code Block') }

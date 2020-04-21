@@ -2,7 +2,15 @@
 
 require 'jekyll'
 require 'html/pipeline'
-require 'html/pipeline/typogruby_filter'
+require 'nokogiri/html'
+require 'typogruby'
+
+TypogrubyFilter =
+  Class.new(HTML::Pipeline::Filter) do
+    def call # rubocop:disable Style/DocumentationMethod
+      Typogruby.improve(html)
+    end
+  end
 
 module Jekyll
   module Typogrify
@@ -20,6 +28,9 @@ module Jekyll
         CONFIG_TYPOGRUBY_KEY = 'typogruby'
         private_constant :CONFIG_TYPOGRUBY_KEY
 
+        ENCODING_HTML_DOCUMENT = (Encoding.default_external || 'UTF-8').to_s.freeze
+        private_constant :ENCODING_HTML_DOCUMENT
+
         #
         # Main plugin method to typogrify post & page content.
         #
@@ -31,43 +42,48 @@ module Jekyll
           content = doc.output
           config = config_for_doc(doc)
 
-          if content.include? BODY_START_TAG
-            html_content = select_content(content, config)
-
-            pipeline = filter_pipeline(
-              config.fetch(CONFIG_KEY, {}).fetch(CONFIG_TYPOGRUBY_KEY, {})
-            ).call(html_content)
-
-            doc.output = pipeline[:output].to_s
-          else
-            doc.output = content
-          end
+          doc.output =
+            if content.include? BODY_START_TAG
+              replace_selected_content(content, config)
+            else
+              content
+            end
         end
 
         #
         # Generates an HTML::Pipeline with a TypogrubyFilter configured.
         #
-        # @param [Jekyll::Configuration] config Typogruby-specific config values
+        # @return [HTML::Pipeline] HTML Pipeline ready to process content
         #
-        # @return [HTML::Pipeline] Configured Pipeline to process content
-        #
-        def filter_pipeline(config)
-          @filter_pipeline ||= HTML::Pipeline.new(
-            [HTML::Pipeline::TypogrubyFilter],
-            config
-          )
+        def filter_pipeline
+          @filter_pipeline ||= HTML::Pipeline.new([TypogrubyFilter])
         end
 
         #
-        # <Description>
+        # Takes an HTML document and yields each fragment matching a CSS
+        # selector in config[:tag_selector], replacing each fragment with the
+        # return value of the block and returning the full modified html
+        # document as a string.
         #
-        # @param [<Type>] html <description>
-        # @param [Jekyll::Configuration] config Config for this plugin
+        # @param [String] html A full HTML document with <!doctype> & <body>
+        # @param [Jekyll::Configuration] config Config for this plugin,
+        #                                including :tag_selector key to select
         #
-        # @return [<Type>] <description>
+        # @return [String] Modified HTML document
         #
-        def select_content(_html, _config)
-          ''
+        def replace_selected_content(html, config)
+          if config[:tag_selector]
+            doc = Nokogiri::HTML(html, nil, ENCODING_HTML_DOCUMENT)
+            elements = doc.css(config[:tag_selector])
+            elements.each do |node|
+              pipeline = filter_pipeline.call(node.to_html)
+              node.replace(pipeline[:output].to_s)
+            end
+            doc.to_html
+          else
+            pipeline = filter_pipeline.call(html)
+            pipeline[:output].to_s
+          end
         end
 
         #
@@ -96,4 +112,9 @@ module Jekyll
       end
     end
   end
+end
+
+Jekyll::Hooks.register [:pages, :documents], :post_render do |doc|
+  warn 'Typogrifying…'
+  Jekyll::Typogrify::Auto.typogrify(doc)
 end

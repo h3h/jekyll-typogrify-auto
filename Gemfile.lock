@@ -1,10 +1,9 @@
 GIT
-  remote: https://github.com/h3h/html-pipeline-typogruby_filter.git
-  revision: 251ed005648bb744d76273a03170502cf09bc6b4
+  remote: https://github.com/h3h/typogruby.git
+  revision: dcbf463c2ed404f77290fcdba6003fc67d1d5225
   specs:
-    html-pipeline-typogruby_filter (0.0.0)
-      html-pipeline (~> 2.3)
-      typogruby (~> 1.0)
+    typogruby (1.0.18)
+      rubypants
 
 PATH
   remote: .
@@ -12,6 +11,7 @@ PATH
     jekyll-typogrify-auto (1.0.0)
       html-pipeline (~> 2.12)
       jekyll (~> 4.0)
+      nokogiri (~> 1.10)
 
 GEM
   remote: https://rubygems.org/
@@ -119,8 +119,6 @@ GEM
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
     thread_safe (0.3.6)
-    typogruby (1.0.18)
-      rubypants
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unicode-display_width (1.6.1)
@@ -131,11 +129,11 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
-  html-pipeline-typogruby_filter!
   jekyll-typogrify-auto!
   rake (>= 12.0)
   rspec (~> 3.0)
   rubocop-jekyll (~> 0.4)
+  typogruby!
 
 BUNDLED WITH
    2.1.4

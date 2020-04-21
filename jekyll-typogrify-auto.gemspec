@@ -15,6 +15,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'html-pipeline', '~> 2.12'
   s.add_dependency 'jekyll',        '~> 4.0'
+  s.add_dependency 'nokogiri',      '~> 1.10'
+  #  s.add_dependency 'typogruby',     '~> 1.0' # disabled until new gem release
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake', '>= 12.0'
