@@ -546,6 +546,7 @@ Lint/Void:
 
 Metrics/AbcSize:
   Enabled: true
+  Max: 20
 
 Metrics/BlockLength:
   Enabled: true
