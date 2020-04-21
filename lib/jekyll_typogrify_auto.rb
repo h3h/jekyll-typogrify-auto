@@ -60,16 +60,14 @@ module Jekyll
         end
 
         #
-        # Takes an HTML document and yields each fragment matching a CSS
-        # selector in config[:tag_selector], replacing each fragment with the
-        # return value of the block and returning the full modified html
-        # document as a string.
+        # Takes an HTML document and replaces each fragment matching a CSS
+        # selector in config[:tag_selector] with typogrified HTML.
         #
         # @param [String] html A full HTML document with <!doctype> & <body>
         # @param [Jekyll::Configuration] config Config for this plugin,
         #                                including :tag_selector key to select
         #
-        # @return [String] Modified HTML document
+        # @return [String] Full modified HTML document
         #
         def replace_selected_content(html, config)
           if config[:tag_selector]
