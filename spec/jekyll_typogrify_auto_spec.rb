@@ -51,6 +51,11 @@ RSpec.describe(Jekyll::Typogrify::Auto) do
       expect(basic_post.output.scan(/(?=#{result})/).count).to eq(1)
     end
 
+    it "doesn't mess up other content around the replacement" do
+      expect(basic_post.output).to include("<p>Before</p>")
+      expect(basic_post.output).to include("<p>After</p>")
+    end
+
     it "doesn't replace em dashes in a post without the selected tag" do
       expect(complex_post.output).to match(/dash\p{P}dash/)
       expect(complex_post.output).not_to include(result)
