@@ -66,7 +66,7 @@ module Jekyll
             doc = Nokogiri::HTML(html, nil, ENCODING_HTML_DOCUMENT)
             elements = doc.css(config['tag_selector'])
             elements.each do |node|
-              pipeline = filter_pipeline.call(node.to_html)
+              pipeline = filter_pipeline.call(node.inner_html)
               node.inner_html = pipeline[:output].to_s
             end
             doc.to_html
