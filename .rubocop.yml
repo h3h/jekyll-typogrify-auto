@@ -1079,9 +1079,7 @@ Style/StringHashKeys:
   - 'spec/**/*'
 
 Style/StringLiterals:
-  Enabled: true
-  Exclude:
-  - 'spec/**/*'
+  Enabled: false
 
 Style/StringLiteralsInInterpolation:
   Enabled: true
