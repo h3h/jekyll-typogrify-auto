@@ -8,7 +8,7 @@ require 'typogruby'
 TypogrubyFilter =
   Class.new(HTML::Pipeline::Filter) do
     def call # rubocop:disable Style/DocumentationMethod
-      Typogruby.improve(html)
+      Typogruby.initial_quotes(Typogruby.emdash(Typogruby.caps(Typogruby.smartypants(Typogruby.widont(html)))))
     end
   end
 
@@ -25,9 +25,6 @@ module Jekyll
         CONFIG_KEY = 'jekyll-typogrify-auto'
         private_constant :CONFIG_KEY
 
-        CONFIG_TYPOGRUBY_KEY = 'typogruby'
-        private_constant :CONFIG_TYPOGRUBY_KEY
-
         ENCODING_HTML_DOCUMENT = (Encoding.default_external || 'UTF-8').to_s.freeze
         private_constant :ENCODING_HTML_DOCUMENT
 
@@ -40,14 +37,9 @@ module Jekyll
         #
         def typogrify(doc)
           content = doc.output
-          config = config_for_doc(doc)
+          return unless content.include?(BODY_START_TAG)
 
-          doc.output =
-            if content.include? BODY_START_TAG
-              replace_selected_content(content, config)
-            else
-              content
-            end
+          doc.output = replace_selected_content(content, config_for_doc(doc))
         end
 
         #
@@ -61,21 +53,21 @@ module Jekyll
 
         #
         # Takes an HTML document and replaces each fragment matching a CSS
-        # selector in config[:tag_selector] with typogrified HTML.
+        # selector in config['tag_selector'] with typogrified HTML.
         #
         # @param [String] html A full HTML document with <!doctype> & <body>
-        # @param [Jekyll::Configuration] config Config for this plugin,
-        #                                including :tag_selector key to select
+        # @param [Jekyll::Configuration] config Optional config for this plugin,
+        #                                including 'tag_selector' key to select
         #
         # @return [String] Full modified HTML document
         #
         def replace_selected_content(html, config)
-          if config[:tag_selector]
+          if config['tag_selector']
             doc = Nokogiri::HTML(html, nil, ENCODING_HTML_DOCUMENT)
-            elements = doc.css(config[:tag_selector])
+            elements = doc.css(config['tag_selector'])
             elements.each do |node|
-              pipeline = filter_pipeline.call(node.to_html)
-              node.replace(pipeline[:output].to_s)
+              pipeline = filter_pipeline.call(node.text)
+              node.inner_html = pipeline[:output].to_s
             end
             doc.to_html
           else
@@ -92,20 +84,7 @@ module Jekyll
         # @return [Jekyll::Configuration] Config values for the doc
         #
         def config_for_doc(doc)
-          config_defaults.merge(
-            doc.site.config.merge(
-              doc.data.fetch(CONFIG_KEY, {})
-            )
-          )
-        end
-
-        #
-        # Returns a set of default configuration values for the plugin
-        #
-        # @return [Jekyll::Configuration]
-        #
-        def config_defaults
-          Jekyll::Configuration.new({tag_selector: 'article'})
+          doc.site.config.merge(doc.data).fetch(CONFIG_KEY, {})
         end
       end
     end
@@ -113,6 +92,5 @@ module Jekyll
 end
 
 Jekyll::Hooks.register [:pages, :documents], :post_render do |doc|
-  warn 'Typogrifying…'
   Jekyll::Typogrify::Auto.typogrify(doc)
 end

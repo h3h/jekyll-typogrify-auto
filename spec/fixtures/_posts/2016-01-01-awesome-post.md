@@ -1,5 +1,9 @@
 ---
-title: I'm a post
+title: Article and not
 ---
-
-test—test
+<body>
+  <article>
+    test—test
+  </article>
+  test—test
+</body>

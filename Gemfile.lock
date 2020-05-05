@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/h3h/typogruby.git
-  revision: dcbf463c2ed404f77290fcdba6003fc67d1d5225
+  revision: 49227e0680fc0df8ea2f9535986ccdd083e09d19
   specs:
     typogruby (1.0.18)
       rubypants
